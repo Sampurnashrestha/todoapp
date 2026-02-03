@@ -6,8 +6,7 @@ export const useGetTodos = () =>{
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    useEffect(()=>{
-        const  getTodos = async()=>{
+    const  getTodos = async()=>{
             try {
                 setLoading(true)
                 setError(null)
@@ -21,11 +20,14 @@ export const useGetTodos = () =>{
                 setLoading(false)
             }
         };
+
+    useEffect(()=>{
         getTodos()
     },[])
 
     return{
-        data,loading,error
+        data,loading,error,
+        refetch: getTodos,
     }
 }
 
@@ -36,4 +38,20 @@ export const usePostTodo=()=>{
         return response.data;
     };
     return { PostTodo };
+
+}
+
+ export const useDeleteTodo=()=>{
+    const deleteTodo= async(id)=>{
+        const response = await httpClient.delete(`/todo/${id}`);
+        return response.data;
+    };
+    return { deleteTodo };
+}
+ export const useUpdateTodo=()=>{
+    const onUpdateTodo= async(id,data)=>{
+        const response = await httpClient.patch(`/todo/${id}`,data);
+        return response.data;
+    };
+    return { onUpdateTodo };
 }
